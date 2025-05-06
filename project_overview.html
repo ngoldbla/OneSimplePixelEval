@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Overview - OneSimplePixel Archaeological Report</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>OneSimplePixel Archaeological Report</h1>
+    <p>A forensic reconstruction of a 2006-2007 collaborative web art experiment</p>
+  </header>
+  
+  <nav>
+      <a href="index.html">OneSimplePixel Archaeological Report</a>
+      <a href="project_overview.html" class="active">Project Overview</a>
+      <a href="technical_architecture.html">Technical Architecture</a>
+      <a href="user_experience.html">User Experience Analysis</a>
+      <a href="project_timeline.html">Project Timeline</a>
+      <a href="file_catalog.html">File Catalog</a>
+      <a href="archaeological_conclusions.html">Archaeological Conclusions</a>
+  </nav>
+  
+  <main>
+    <h1>OneSimplePixel Project Overview</h1>
+
+<h2>Introduction</h2>
+
+<p>OneSimplePixel (OSP) is a web-based collaborative pixel art project created by "onesimple", an idea company, in late 2006 and launched on January 1, 2007. Unlike other million-pixel advertising pages popular during that time, OneSimplePixel had a more experimental and philosophical purpose.
+</p>
+
+<h2>Project Concept</h2>
+
+<p>The concept of OneSimplePixel was to create a collaborative canvas where users could claim individual pixels, assign them colors, names, and descriptions, and see what would emerge from this collective creation. The website posed philosophical questions about the nature of collective creation:
+</p>
+
+<ul><li>What will we create?</li>
+  <li>What will it mean?</li>
+  <li>Is it possible?</li>
+  <li>Will we learn something about ourselves from this?</li>
+  <li>Will the resulting image be a random collection of pixels or will we create a pattern?</li>
+</ul>
+
+<p>As stated on the website: "simply stated, this question cannot be answered until the project is complete."
+</p>
+
+<h2>Technical Implementation</h2>
+
+<p>The project consists of a web application with the following components:
+</p><p>1. <strong>Database Structure</strong>: A MySQL database (named <code>onesi3_1mp</code>) with a primary table <code>1mp</code> that stores pixel information:
+   - x, y coordinates
+   - Pixel name (limited to 24 characters)
+   - Pixel color (hex value)
+   - Pixel description (text field)
+   - User email
+   - User country
+   - User IP address
+   - Timestamp
+</p><p>2. <strong>Web Interface</strong>: PHP-based website with several key pages:
+   - Home page with the pixel canvas
+   - Pixel picker interface
+   - About page
+   - News page
+   - Merchandise page (linking to CafePress)
+</p><p>3. <strong>Pixel Interface</strong>: Users could:
+   - Select available pixels
+   - Name their pixel
+   - Write a description
+   - Choose a color
+   - Associate with a country
+   - Provide email for updates
+</p><p>4. <strong>Backend Processing</strong>: PHP scripts to:
+   - Process pixel submissions
+   - Generate the collective image
+   - Verify user inputs
+   - Create backups of the database
+</p>
+
+<h2>Development Timeline</h2>
+
+<ul><li><strong>Concept creation</strong>: Late October 2006</li>
+  <li><strong>Development start</strong>: November 22, 2006</li>
+  <li><strong>Initial release</strong>: January 1, 2007</li>
+  <li><strong>Continued updates</strong>: Through at least March 25, 2007 (based on file dates)</li>
+</ul>
+
+<h2>Project Evolution</h2>
+
+<p>Based on the file structure and versioning, the project went through several iterations:
+</p><ol>
+<li>Initial beta release</li>
+<li>Live production version</li>
+<li>Multiple interface design iterations (evidenced by design files)</li>
+<li>Database schema updates and backups</li>
+</ol><p>The project appears to have been maintained at least through early 2007, with multiple backups and versions of the codebase preserved.
+</p>
+
+<h2>Cultural Context</h2>
+
+<p>OneSimplePixel emerged during the era of collaborative internet art experiments and pixel-based advertising websites like the "Million Dollar Homepage". However, unlike commercial variants, OneSimplePixel positioned itself as a philosophical and artistic experiment in collective creation.
+</p>
+
+<h2>Legacy</h2>
+
+<p>The preserved files represent a snapshot of early web-based collaborative art, showing both the technical implementation and conceptual thinking behind such projects in the mid-2000s era of the internet.</p>
+  </main>
+  
+  <footer>
+    <p>Archaeological Report Generated 2025</p>
+  </footer>
+</body>
+</html>

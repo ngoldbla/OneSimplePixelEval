@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Architecture - OneSimplePixel Archaeological Report</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>OneSimplePixel Archaeological Report</h1>
+    <p>A forensic reconstruction of a 2006-2007 collaborative web art experiment</p>
+  </header>
+  
+  <nav>
+      <a href="index.html">OneSimplePixel Archaeological Report</a>
+      <a href="project_overview.html">Project Overview</a>
+      <a href="technical_architecture.html" class="active">Technical Architecture</a>
+      <a href="user_experience.html">User Experience Analysis</a>
+      <a href="project_timeline.html">Project Timeline</a>
+      <a href="file_catalog.html">File Catalog</a>
+      <a href="archaeological_conclusions.html">Archaeological Conclusions</a>
+  </nav>
+  
+  <main>
+    <h1>Technical Architecture of OneSimplePixel</h1>
+
+<h2>System Architecture</h2>
+
+<p>The OneSimplePixel project appears to use a standard LAMP (Linux, Apache, MySQL, PHP) stack architecture, common for web applications of its era (2006-2007).
+</p>
+
+<h3>Components</h3>
+
+<ol>
+<li><strong>Web Server</strong>: Likely Apache based on file structure and common web server technology of the time</li>
+<li><strong>Database</strong>: MySQL database</li>
+<li><strong>Server-side Programming</strong>: PHP (pre-version 5 conventions)</li>
+<li><strong>Client-side Technologies</strong>: HTML, JavaScript, CSS</li>
+<li><strong>Image Processing</strong>: PHP GD library for pixel manipulation and image generation</li>
+</ol>
+
+<h2>Database Schema</h2>
+
+<p>The project uses a MySQL database with a primary table structure:
+</p>
+
+<pre><code>sql
+<p>CREATE TABLE <code>1mp</code> (
+  <code>x</code> int(11) NOT NULL default '0',
+  <code>y</code> int(11) NOT NULL default '0',
+  <code>count</code> int(11) NOT NULL auto_increment,
+  <code>pixelName</code> varchar(24) NOT NULL default '',
+  <code>pixelColor</code> varchar(6) NOT NULL default '',
+  <code>pixelDescription</code> text NOT NULL,
+  <code>humanEmail</code> varchar(100) NOT NULL default '',
+  <code>update</code> tinyint(1) NOT NULL default '0',
+  <code>verified</code> tinyint(1) NOT NULL default '0',
+  <code>humanCountry</code> varchar(50) NOT NULL default '',
+  <code>humanIP</code> varchar(20) NOT NULL default '',
+  <code>DateTime</code> datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY (<code>count</code>)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+</p></code></pre>
+
+<h3>Database Fields</h3>
+
+<ul><li><strong>x, y</strong>: Pixel coordinates on the 1000×1000 canvas</li>
+  <li><strong>count</strong>: Auto-incremented unique identifier</li>
+  <li><strong>pixelName</strong>: User-provided name for the pixel (max 24 chars)</li>
+  <li><strong>pixelColor</strong>: Hexadecimal color value (without # prefix)</li>
+  <li><strong>pixelDescription</strong>: User-provided description/meaning for the pixel</li>
+  <li><strong>humanEmail</strong>: Email address for updates notification</li>
+  <li><strong>update</strong>: Boolean flag for notification opt-in</li>
+  <li><strong>verified</strong>: Verification status flag</li>
+  <li><strong>humanCountry</strong>: Country association for the pixel</li>
+  <li><strong>humanIP</strong>: IP address of the submitter</li>
+  <li><strong>DateTime</strong>: Timestamp of submission</li>
+</ul>
+
+<h2>File Structure</h2>
+
+<p>The project has a relatively complex file structure that suggests multiple iterations and development phases:
+</p>
+
+<h3>Main Components</h3>
+
+<ol>
+<li><strong>Web Root (<code>ospbackup/</code>)</strong>: 
+   - Contains public-facing website files
+   - HTML templates for static pages
+   - JavaScript for interactive features
+   - Image assets</li>
+<li><strong>Utility Scripts (<code>utils/</code>)</strong>: 
+   - Backend processing scripts
+   - Image generation (<code>build_1mp.php</code>)
+   - Database operations
+   - Verification scripts</li>
+<li><strong>Design Assets (<code>design/</code>)</strong>:
+   - Interface mockups (.xcf GIMP files)
+   - OmniGraffle interface designs
+   - Visual assets for the site
+   - Versioned design files</li>
+<li><strong>Database Files (<code>1mp.sql/</code>)</strong>:
+   - SQL dump files
+   - Table creation scripts
+   - Data backups</li>
+<li><strong>Beta Version (<code>ospbackup/beta/</code>)</strong>:
+   - Earlier version of the site
+   - Testing environment
+   - Includes WordPress installation package</li>
+</ol>
+
+<h2>Key Technical Processes</h2>
+
+<h3>Pixel Image Generation</h3>
+
+<p>The <code>build_1mp.php</code> script outlines the image generation process:
+</p><ol>
+<li>Create a 1000×1000 pixel GIF canvas with white background</li>
+<li>Query the database for all pixel entries</li>
+<li>For each entry, convert the stored hex color to RGB values</li>
+<li>Set individual pixels on the canvas based on x,y coordinates and color</li>
+<li>Output the composite image as a GIF file</li>
+</ol>
+
+<pre><code>php
+<p>// Simplified process from build_1mp.php
+$im = imagecreate(1000, 1000);
+$bgcolor = imagecolorallocate($im, 0xFF, 0xFF, 0xFF);
+imagefill($im, 0, 0, $bgcolor);
+</p><p>// Query database for pixels
+$sql = 'SELECT * FROM 1mp';
+$result = mysql_query($sql, $db);
+</p><p>while ($row = mysql_fetch_assoc($result)) {
+    $c = imagecolorexact($im, 
+        hexdec(substr($row["pixelColor"], 0,2)), 
+        hexdec(substr($row["pixelColor"], 2,2)), 
+        hexdec(substr($row["pixelColor"], 4,2)));
+    imagesetpixel($im, $row["x"], $row["y"], $c);
+}
+</p><p>// Output final image
+imageGIF($im, "../images/1mp_rebuilt.gif", 100);
+imagedestroy($im);
+</p></code></pre>
+
+<h3>User Interface</h3>
+
+<p>Based on the preserved design files and HTML templates, the user interface featured:
+</p><ol>
+<li><strong>Pixel Selection Interface</strong>: 
+   - Interactive canvas for selecting available pixels
+   - Hover states to show pixel availability
+   - Zoom functionality for precise selection</li>
+<li><strong>Information Entry Forms</strong>:
+   - Fields for pixel name, description, color
+   - Country selection
+   - Email entry for notifications
+   - Terms acceptance</li>
+<li><strong>Navigation</strong>:
+   - Pixel browsing interface
+   - Zoom controls
+   - Information display for claimed pixels</li>
+</ol>
+
+<h2>Security Considerations</h2>
+
+<p>The codebase shows some security considerations typical of its era:
+</p><ol>
+<li>Database credentials hardcoded in scripts (not a best practice today)</li>
+<li>Limited input validation visible in the code snippets</li>
+<li>Storage of user IP addresses and email information</li>
+<li>CAPTCHA implementation for bot prevention</li>
+</ol>
+
+<h2>Development Evolution</h2>
+
+<p>File naming conventions and directory structure suggest an organic development process:
+</p><ol>
+<li>Multiple iterations of database structure (multiple SQL files)</li>
+<li>Interface design revisions (multiple versioned design files)</li>
+<li>Backup copies of critical scripts before modifications</li>
+<li>Beta testing environment separate from production</li>
+</ol>
+
+<h2>Technical Challenges</h2>
+
+<p>Based on the code and structure, the developers likely faced these technical challenges:
+</p><ol>
+<li><strong>Performance optimization</strong> for a potentially large database of pixel entries</li>
+<li><strong>Image generation efficiency</strong> when recreating the 1000×1000 canvas</li>
+<li><strong>Interactive interface development</strong> for pixel selection in 2006-era browsers</li>
+<li><strong>Concurrent user management</strong> to prevent pixel collision/overwrites</li>
+<li><strong>Backup and restoration</strong> procedures for continued operation</li>
+</ol>
+  </main>
+  
+  <footer>
+    <p>Archaeological Report Generated 2025</p>
+  </footer>
+</body>
+</html>
